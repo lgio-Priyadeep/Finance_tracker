@@ -30,6 +30,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     strategy:
       matrix:
         python-version: ["3.10", "3.11"]
@@ -47,6 +48,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-html coverage flake8 black psycopg2-binary
+
       # Wait for PostgreSQL to be ready
       - name: Wait for PostgreSQL
         run: |
@@ -54,5 +56,6 @@ jobs:
               echo "Waiting for PostgreSQL...";
               sleep 2;
           done
+
       - name: Run Tests
         run: pytest --maxfail=1 --disable-warnings -q
