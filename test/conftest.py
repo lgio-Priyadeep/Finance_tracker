@@ -19,6 +19,41 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+
+def initialize_database():
+    """Run the schema.sql script to create the necessary tables."""
+    schema_path = os.path.join(project_root, 'schema.sql')
+    if not os.path.exists(schema_path):
+        raise FileNotFoundError(f"Schema file not found at {schema_path}")
+    
+    with open(schema_path, 'r') as f:
+        sql_script = f.read()
+    
+    conn = connection_pool.getconn()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql_script)
+        conn.commit()
+        print("Database schema initialized successfully.")
+    except Exception as e:
+        conn.rollback()
+        print("Error initializing database schema:", e)
+        raise e
+    finally:
+        connection_pool.putconn(conn)
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
+    """
+    This fixture runs once per test session.
+    It initializes the database schema before any tests are executed.
+    """
+    initialize_database()
+    yield
+    # Optionally, add teardown code here to drop tables if needed.
+
+# Your other fixtures, such as isolate_db, will run after the schema is initialized.
+
 def create_test_user():
     """Ensure a test user with id = 1 exists."""
     conn = connection_pool.getconn()

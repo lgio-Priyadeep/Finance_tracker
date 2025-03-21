@@ -5,6 +5,8 @@ env:
   DB_PASSWORD: 5568Post54673289*^gre
   DB_HOST: localhost
   DB_NAME: financial_tracker_db
+  PGUSER: your_desired_role
+
 
 on:
   push:

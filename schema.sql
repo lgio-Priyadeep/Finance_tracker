@@ -64,4 +64,5 @@ CREATE TABLE budgets (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT budgets_user_id_fkey FOREIGN KEY (user_id)
         REFERENCES users (id) ON DELETE CASCADE
-);echo 'export PGUSER=your_desired_role' >> ~/.bashrc
+);
+
