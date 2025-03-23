@@ -2,6 +2,8 @@
 import os
 import sys
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "finance_tracker_project.settings")
+
 # Determine the project root directory (one level up from the test folder)
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
