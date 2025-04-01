@@ -1,11 +1,16 @@
 name: Python CI
 
 env:
+  SECRET_KEY: 'django-insecure-9qfqu^o+re^@ot^0u+0z^==)&-d!r2*!lu*2#73iavmjq9h36u'
+  DEBUG: False
+  DB_ENGINE: django.db.backends.postgresql
   DB_USER: postgres
   DB_PASSWORD: 5568Post54673289*^gre
   DB_HOST: localhost
+  DB_PORT: 5432
   DB_NAME: financial_tracker_db
   PGUSER: your_desired_role
+  
 
 
 on:
