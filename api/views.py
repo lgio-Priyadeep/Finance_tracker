@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # api/views.py
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,20 +10,13 @@ from app.services import add_manual_transaction, estimate_tax, fetch_bank_transa
 # Import other necessary functions from your services module
 
 class TransactionCreateView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         serializer = TransactionSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
             try:
-                txn_id = add_manual_transaction(
-                    data['user_id'],
-                    data['amount'],
-                    data['description'],
-                    data['category'],
-                    txn_date=data.get('date'),
-                    txn_type=data.get('type', 'expense'),
-                    source=data.get('source', 'cash')
-                )
+                txn_id =  add_manual_transaction(**serializer.validated_data)
                 return Response({"transaction_id": txn_id}, status=status.HTTP_201_CREATED)
             except Exception as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
